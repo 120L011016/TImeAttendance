@@ -189,9 +189,15 @@ public class MainPanel extends JPanel {
                     if (frame != null) {// 如果可以获得到有效帧
                         // 获取当前帧中出现的人脸对应的特征码
                         String code = FaceEngineService.detectFace(FaceEngineService.getFaceFeature(frame));
-                        if (code != null) {// 如果特征码不为null，表明画面中存在某员工的人脸
+                        if (code != null) {
+
+
+                            // 如果特征码不为null，表明画面中存在某员工的人脸
                             Employee e = HRService.getEmp(code);// 根据特征码获取员工对象
                             HRService.addClockInRecord(e);// 为此员工添加打卡记录
+                            String[] palce =  IP.getplace();
+                            area.append(palce[0]+"\n");
+                            area.append(palce[1]+"\n");
                             // 文本域添加提示信息
                             area.append("\n" + DateTimeUtil.dateTimeNow() + " \n");
                             area.append(e.getName() + " 打卡成功。\n\n");
