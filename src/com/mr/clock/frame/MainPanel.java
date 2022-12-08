@@ -46,7 +46,7 @@ public class MainPanel extends JPanel {
      * 组件初始化
      */
     private void init() {
-        parent.setTitle("MR人脸识别打卡系统");
+        parent.setTitle("人脸识别打卡系统");
 
         center = new JPanel();// 中部面板
         center.setLayout(null);// 采用绝对布局
