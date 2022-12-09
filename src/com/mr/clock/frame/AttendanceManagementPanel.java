@@ -30,7 +30,7 @@ import com.mr.clock.util.DateTimeUtil;
 /**
  * ¿¼ÇÚ±¨±íÃæ°å
  * 
- * @author mingrisoft
+ * 
  *
  */
 public class AttendanceManagementPanel extends JPanel {

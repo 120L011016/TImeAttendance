@@ -18,7 +18,7 @@ import com.mr.clock.service.HRService;
 /**
  * µÇÂ¼¶Ô»°¿ò
  * 
- * @author mingrisoft
+ * 
  *
  */
 public class LoginDialog extends JDialog {

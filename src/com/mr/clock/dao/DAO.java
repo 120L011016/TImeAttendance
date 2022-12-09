@@ -10,7 +10,7 @@ import com.mr.clock.pojo.WorkTime;
 /**
  * 数据库访问接口
  * 
- * @author mingrisoft
+ * 
  *
  */
 public interface DAO {

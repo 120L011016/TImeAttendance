@@ -28,7 +28,7 @@ import com.mr.clock.session.Session;
 /**
  * 人脸识别引擎服务
  * 
- * @author mingrisoft
+ * 
  *
  */
 public class FaceEngineService {

@@ -19,7 +19,7 @@ import com.mr.clock.util.JDBCUtil;
 /**
  * 基于MySQL的DAO实现类
  * 
- * @author mingrisoft
+ * 
  *
  */
 public class DAOMysqlImpl implements DAO {

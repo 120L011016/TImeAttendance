@@ -22,7 +22,7 @@ import com.mr.clock.util.DateTimeUtil;
 /**
  * 人事服务
  * 
- * @author mingrisoft
+ * 
  *
  */
 public class HRService {

@@ -17,7 +17,7 @@ import javax.naming.ConfigurationException;
 /**
  * 数据库连接工具类
  * 
- * @author mingrisoft
+ * 
  *
  */
 public class JDBCUtil {

@@ -15,7 +15,7 @@ import com.mr.clock.session.Session;
 /**
  * Ö÷´°Ìå
  * 
- * @author mingrisoft
+ * 
  *
  */
 public class MainFrame extends JFrame {

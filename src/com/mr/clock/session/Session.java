@@ -19,7 +19,7 @@ import com.mr.clock.util.JDBCUtil;
 /**
  * 全局会话，用来缓存全局数据
  * 
- * @author mingrisoft
+ * 
  *
  */
 public class Session {

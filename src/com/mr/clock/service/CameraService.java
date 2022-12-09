@@ -11,7 +11,7 @@ import com.github.sarxos.webcam.WebcamPanel;
 /**
  * ÉãÏñÍ··þÎñ
  * 
- * @author mingrisoft
+ * 
  *
  */
 public class CameraService {

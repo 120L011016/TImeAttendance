@@ -3,7 +3,7 @@ package com.mr.clock.pojo;
 /**
  * 公司作息时间
  * 
- * @author mingrisoft
+ * 
  *
  */
 public class WorkTime {

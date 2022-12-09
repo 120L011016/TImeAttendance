@@ -12,7 +12,7 @@ import com.mr.clock.session.Session;
 /**
  * 图像文件服务
  * 
- * @author mingrisoft
+ * 
  *
  */
 public class ImageService {

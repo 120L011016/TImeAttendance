@@ -3,7 +3,7 @@ package com.mr.clock.pojo;
 /**
  * π‹¿Ì‘±
  * 
- * @author mingrisoft
+ * 
  *
  */
 public class User {

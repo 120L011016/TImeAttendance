@@ -23,7 +23,7 @@ import com.mr.clock.session.Session;
 /**
  * 员工管理面板
  * 
- * @author mingrisoft
+ * 
  *
  */
 public class EmployeeManagementPanel extends JPanel {
@@ -117,7 +117,7 @@ public class EmployeeManagementPanel extends JPanel {
     /**
      * 自定义员工信息表格类
      * 
-     * @author mingrisoft
+     * 
      *
      */
     private class EmpTable extends JTable {

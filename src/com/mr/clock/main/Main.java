@@ -6,7 +6,7 @@ import com.mr.clock.frame.MainPanel;
 /**
  * ∆Ù∂Ø¿‡
  * 
- * @author mingrisoft
+ * 
  *
  */
 public class Main {

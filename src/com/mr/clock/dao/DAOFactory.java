@@ -3,7 +3,7 @@ package com.mr.clock.dao;
 /**
  * DAOπ§≥ß¿‡
  * 
- * @author mingrisoft
+ * 
  *
  */
 public class DAOFactory {

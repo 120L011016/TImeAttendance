@@ -24,7 +24,7 @@ import com.mr.clock.session.Session;
 /**
  * 添加新员工面板
  * 
- * @author mingrisoft
+ * 
  *
  */
 public class AddEmployeePanel extends JPanel {
@@ -80,7 +80,8 @@ public class AddEmployeePanel extends JPanel {
             public void run() {
                 if (CameraService.startCamera()) {// 如果摄像头成功开启
                     message.setText("请正面面向摄像头");// 更换提示信息
-                    // 获取摄像头画面面板
+                    // 获取摄像头画面
+                    // 面板
                     JPanel cameraPanel = CameraService.getCameraPanel();
                     // 设置面板的坐标和宽高
                     cameraPanel.setBounds(150, 75, 320, 240);
