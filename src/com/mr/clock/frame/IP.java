@@ -3,32 +3,16 @@ package com.mr.clock.frame;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.List;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
-
-
+import java.io.UnsupportedEncodingException;
 import javax.net.ssl.HttpsURLConnection;
-import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
 
 
 public class IP {
-
     public static String[] getplace() {
         try {
-            // TODO Auto-generated method stub
             Enumeration<NetworkInterface> enumeration = NetworkInterface.getNetworkInterfaces();
             InetAddress ip = null;
             while (enumeration.hasMoreElements()) {
@@ -43,9 +27,12 @@ public class IP {
                     while (address.hasMoreElements()) {
                         ip = address.nextElement();
                         if (ip instanceof Inet4Address) {
-                            System.out.println(ip.getHostAddress());
+//                            System.out.println(ip.getHostAddress());
 
-                            String IP = "106.112.10.202";
+
+                            String IP = getNowIPv4();
+//                            System.out.println(IP);
+//                            System.exit(0);
                             String key = "981118347c34901d75d295b638022ded";
                             String url_head = "https://restapi.amap.com/v3/ip?output=json&key=";
                             String Url_str = url_head + key + "&ip=" + IP;
@@ -78,6 +65,7 @@ public class IP {
                             String[] place = {province, city};
                             return place;
                         }
+
                     }
                 }
             }
@@ -93,5 +81,29 @@ public class IP {
         }
     }
 
+    // ·½·¨4
+    private static String getNowIPv4() throws IOException {
+        String ip = null;
+        BufferedReader br = null;
+        try {
+            URL url = new URL("https://v6r.ipip.net/?format=callback");
+            br = new BufferedReader(new InputStreamReader(url.openStream()));
+            String s = "";
+            StringBuffer sb = new StringBuffer("");
+            String webContent = "";
+            while ((s = br.readLine()) != null) {
+                sb.append(s + "\r\n");
+            }
+            webContent = sb.toString();
+            int start = webContent.indexOf("(") + 2;
+            int end = webContent.indexOf(")") - 1;
+            webContent = webContent.substring(start, end);
+            ip = webContent;
+        } finally {
+            if (br != null)
+                br.close();
+        }
+        return ip;
+    }
 
 }
