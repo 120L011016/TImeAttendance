@@ -14,6 +14,5 @@ public class DAOFactory {
      */
     public static DAO getDAO() {
         return new DAOMysqlImpl();// 返回基于Mysql的实现类
-//         return new DAOSqliteImpl();// 返回基于Sqlite的实现类
     }
 }

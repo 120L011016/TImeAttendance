@@ -22,16 +22,15 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.table.DefaultTableModel;
 
+import com.mr.clock.pojo.WorkLocation;
 import com.mr.clock.pojo.WorkTime;
 import com.mr.clock.service.HRService;
+import com.mr.clock.service.LocationService;
 import com.mr.clock.session.Session;
 import com.mr.clock.util.DateTimeUtil;
 
 /**
  * 考勤报表面板
- * 
- * 
- *
  */
 public class AttendanceManagementPanel extends JPanel {
     private MainFrame parent;// 主窗体
@@ -39,6 +38,8 @@ public class AttendanceManagementPanel extends JPanel {
     private JToggleButton dayRecordBtn; // 日报按钮
     private JToggleButton monthRecordBtn;// 月报按钮
     private JToggleButton worktimeBtn;// 作息时间设置按钮
+    private JToggleButton workLocationBtn;
+
     private JButton back;// 返回按钮
     private JButton flushD, flushM;// 分别在日报和月报面板中的刷新按钮
     private JPanel centerdPanel; // 中央面板
@@ -66,6 +67,10 @@ public class AttendanceManagementPanel extends JPanel {
     private JTextField hourE, minuteE, secondE;
     private JButton updateWorktime;// 替换作息时间按钮
 
+    private JPanel workLocationPanel;// 打卡地点面板
+    private JTextField provinceB, cityB; //地点文本框
+    private JButton updateLocation;// 更换打卡地点按钮
+
     public AttendanceManagementPanel(MainFrame parent) {
         this.parent = parent;
         init();// 组件初始化
@@ -83,11 +88,14 @@ public class AttendanceManagementPanel extends JPanel {
         dayRecordBtn.setSelected(true);// 日报按钮处于选中状态
         monthRecordBtn = new JToggleButton("月报");
         worktimeBtn = new JToggleButton("作息时间设置");
+        workLocationBtn = new JToggleButton("打卡地点设置");
+
         // 按钮组，保证三个按钮中只有一个按钮处于选中状态
         ButtonGroup group = new ButtonGroup();
         group.add(dayRecordBtn);
         group.add(monthRecordBtn);
         group.add(worktimeBtn);
+        group.add(workLocationBtn);
 
         back = new JButton("返回");
         flushD = new JButton("刷新报表");
@@ -97,6 +105,7 @@ public class AttendanceManagementPanel extends JPanel {
         dayRecordInit();// 日报面板初始化
         MonthRecordInit();// 月报面板初始化
         worktimeInit();// 作息时间面板初始化
+        workLocationInit();
 
         card = new CardLayout();// 卡片布局
         centerdPanel = new JPanel(card);// 中部面板采用卡片布局
@@ -106,11 +115,14 @@ public class AttendanceManagementPanel extends JPanel {
         centerdPanel.add("month", monthRecordPanel);
         // worktime标签为作息时间面板
         centerdPanel.add("worktime", worktimePanel);
+        // workLocation标签为打卡地点面板
+        centerdPanel.add("workLocation",workLocationPanel);
 
         JPanel bottom = new JPanel();// 底部面板
         bottom.add(dayRecordBtn);// 添加底部的组件
         bottom.add(monthRecordBtn);
         bottom.add(worktimeBtn);
+        bottom.add(workLocationBtn);
         bottom.add(back);
 
         setLayout(new BorderLayout());// 采用边界布局
@@ -146,7 +158,18 @@ public class AttendanceManagementPanel extends JPanel {
                 card.show(centerdPanel, "worktime");
             }
         });
-        
+
+        // TODO
+        // 作息时间设置按钮的事件
+        workLocationBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // 卡片布局切换至作息时间面板
+                card.show(centerdPanel, "workLocation");
+            }
+        });
+
+
         // 返回按钮的事件
         back.addActionListener(new ActionListener() {
             @Override
@@ -209,6 +232,35 @@ public class AttendanceManagementPanel extends JPanel {
             }
         });
 
+        // TODO
+        // 替换打卡地点按钮
+        updateLocation.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String province = provinceB.getText().trim();
+                String city = cityB.getText().trim();
+
+                boolean check = true;// 地点校验成功标志
+
+                if (!province.matches("[\u4E00-\u9FA5]+")) {
+                    JOptionPane.showMessageDialog(parent, "省份的格式不正确");
+                }
+                if (!city.matches("[\u4E00-\u9FA5]+")) {
+                    JOptionPane.showMessageDialog(parent, "城市的格式不正确");
+                }
+
+                if (check) {// 如果校验通过
+                    // 弹出选择对话框，并记录用户选择
+                    int confirmation = JOptionPane.showConfirmDialog(parent,
+                            "确定做出以下设置？\n" + province + "\n" + city, "提示！", JOptionPane.YES_NO_OPTION);
+                    if (confirmation == JOptionPane.YES_OPTION) {// 如果用户选择确定
+                        WorkLocation input = new WorkLocation(province, city);
+                        LocationService.updateWorkLocation(input);// 更新作息时间
+                    }
+                }
+            }
+        });
+
         // 日报面板中的日期下拉列表使用的监听对象
         ActionListener dayD_Listener = new ActionListener() {
             @Override
@@ -244,6 +296,62 @@ public class AttendanceManagementPanel extends JPanel {
 
         yearComboBoxM.addActionListener(yearM_monthM_Listener);// 添加监听
         monthComboBoxM.addActionListener(yearM_monthM_Listener);
+    }
+
+
+    // TODO
+    /**
+     * 打卡地点面板初始化
+     */
+    private void workLocationInit() {
+
+        WorkLocation workLocation = Session.workLocation;// 获取当前的作息时间
+        // 将上班时间和下班时间分割成时、分、秒数组
+        String province = workLocation.getProvince();
+        String city = workLocation.getCity();
+
+        Font labelFont = new Font("黑体", Font.BOLD, 20);// 字体
+
+        JPanel top = new JPanel();// 顶部面板
+
+        JLabel provinceLabel = new JLabel("省份：");// 文本标签
+        provinceLabel.setFont(labelFont);// 使用指定字体
+        top.add(provinceLabel);
+
+        provinceB = new JTextField(12);// 上班时间的时输入框，长度为3
+        provinceB.setFont(labelFont);
+        provinceB.setText(province);// 默认值为当前打卡省份
+        top.add(provinceB);
+
+
+        JPanel bottom = new JPanel();// 底部面板
+
+        JLabel cityLabel = new JLabel("城市：");
+        cityLabel.setFont(labelFont);
+        bottom.add(cityLabel);
+
+        cityB = new JTextField(12);// 下班时间的时输入框
+        cityB.setFont(labelFont);
+        cityB.setText(city);// 默认值为当前打卡城市
+        bottom.add(cityB);
+
+
+
+        workLocationPanel = new JPanel();
+        workLocationPanel.setLayout(null);// 作息时间面板采用绝对布局
+
+        JPanel center = new JPanel();// 作息面板中央显示的面板
+        center.setLayout(new GridLayout(2, 1));// 采用2行1列的网格布局
+        center.add(top);// 第1行放顶部面板
+        center.add(bottom);// 第2行放底部面板
+
+        center.setBounds(100, 60, 400, 150);// 设置面板的坐标和宽高
+        workLocationPanel.add(center);
+
+        updateLocation = new JButton("替换打卡地点");
+        updateLocation.setFont(new Font("黑体", Font.BOLD, 20));
+        updateLocation.setBounds(220, 235, 170, 55);// 按钮的坐标和宽高
+        workLocationPanel.add(updateLocation);
     }
 
     /**

@@ -1,24 +1,10 @@
-/*
-Navicat MySQL Data Transfer
-
-Source Server         : 8.0
-Source Server Version : 80022
-Source Host           : localhost:3307
-Source Database       : db_time_attendance
-
-Target Server Type    : MYSQL
-Target Server Version : 80022
-File Encoding         : 65001
-
-Date: 2021-01-23 16:05:55
-*/
 CREATE DATABASE db_time_attendance;
 USE db_time_attendance;
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for `t_emp`
+-- 创建表t_tmp
 -- ----------------------------
 DROP TABLE IF EXISTS `t_emp`;
 CREATE TABLE `t_emp` (
@@ -29,7 +15,7 @@ CREATE TABLE `t_emp` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
--- Records of t_emp
+-- t_tmp中的内容
 -- ----------------------------
 INSERT INTO `t_emp` VALUES ('1', '张三', '42c68589b0c642f699c4da379613079a');
 INSERT INTO `t_emp` VALUES ('2', '李四', '1a4f5496a8ca4cdf9bfb71bb18748ea6');
@@ -37,7 +23,7 @@ INSERT INTO `t_emp` VALUES ('3', '王五', '9ecb3912c4df4a86a9a67dc02fea56e8');
 INSERT INTO `t_emp` VALUES ('4', '赵六', '6b94bf8c4ddb4b2ca97ce63ff8d14103');
 
 -- ----------------------------
--- Table structure for `t_lock_in_record`
+-- 创建表t_lock_in_record
 -- ----------------------------
 DROP TABLE IF EXISTS `t_lock_in_record`;
 CREATE TABLE `t_lock_in_record` (
@@ -46,7 +32,7 @@ CREATE TABLE `t_lock_in_record` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
--- Records of t_lock_in_record
+-- t_lock_in_record中的内容
 -- ----------------------------
 INSERT INTO `t_lock_in_record` VALUES ('1', '2021-01-01 08:33:00');
 INSERT INTO `t_lock_in_record` VALUES ('1', '2021-01-01 17:29:20');
@@ -295,7 +281,7 @@ INSERT INTO `t_lock_in_record` VALUES ('4', '2021-01-31 08:15:21');
 INSERT INTO `t_lock_in_record` VALUES ('4', '2021-01-31 17:33:22');
 
 -- ----------------------------
--- Table structure for `t_user`
+-- 创建表t_user
 -- ----------------------------
 DROP TABLE IF EXISTS `t_user`;
 CREATE TABLE `t_user` (
@@ -306,13 +292,13 @@ CREATE TABLE `t_user` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
--- Records of t_user
+-- t_user中的内容
 -- ----------------------------
 INSERT INTO `t_user` VALUES ('1', 'mr', 'mrsoft');
 INSERT INTO `t_user` VALUES ('2', 'admin', 'admin');
 
 -- ----------------------------
--- Table structure for `t_work_time`
+-- 创建表t_work_time
 -- ----------------------------
 DROP TABLE IF EXISTS `t_work_time`;
 CREATE TABLE `t_work_time` (
@@ -321,6 +307,20 @@ CREATE TABLE `t_work_time` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
--- Records of t_work_time
+-- t_work_time中的内容
 -- ----------------------------
 INSERT INTO `t_work_time` VALUES ('09:00:00', '17:00:00');
+
+-- ----------------------------
+-- 创建表t_location
+-- ----------------------------
+DROP TABLE IF EXISTS `t_location`;
+CREATE TABLE `t_location` (
+                               `province` varchar(10) NOT NULL,
+                               `city` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- t_location中的内容
+-- ----------------------------
+INSERT INTO `t_work_time` VALUES ('河北省', '邯郸市');

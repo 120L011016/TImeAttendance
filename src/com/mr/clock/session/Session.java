@@ -9,20 +9,21 @@ import java.util.Set;
 import com.arcsoft.face.FaceFeature;
 import com.mr.clock.pojo.Employee;
 import com.mr.clock.pojo.User;
+import com.mr.clock.pojo.WorkLocation;
 import com.mr.clock.pojo.WorkTime;
-import com.mr.clock.service.CameraService;
-import com.mr.clock.service.FaceEngineService;
-import com.mr.clock.service.HRService;
-import com.mr.clock.service.ImageService;
+import com.mr.clock.service.*;
 import com.mr.clock.util.JDBCUtil;
 
 /**
  * 全局会话，用来缓存全局数据
- * 
- * 
- *
  */
 public class Session {
+
+    /**
+     * 打卡时应在的位置
+     */
+    public static WorkLocation workLocation = null;
+
     /**
      * 当前登录管理员
      */
@@ -53,6 +54,7 @@ public class Session {
      */
     public static void init() {
         ImageService.loadAllImage();// 加载所有人脸图像文件
+        LocationService.loadLocation();
         HRService.loadWorkTime();// 加载作息时间
         HRService.loadAllEmp();// 加载所有员工
         HRService.loadAllClockInRecord();// 加载所有打卡记录

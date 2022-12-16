@@ -1,4 +1,10 @@
-package com.mr.clock.frame;
+package com.mr.clock.service;
+
+import com.mr.clock.dao.DAO;
+import com.mr.clock.dao.DAOFactory;
+import com.mr.clock.pojo.WorkLocation;
+import com.mr.clock.session.Session;
+import com.sun.corba.se.spi.orbutil.threadpool.Work;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,8 +16,9 @@ import javax.net.ssl.HttpsURLConnection;
 import java.util.Enumeration;
 
 
-public class IP {
-    public static String[] getplace() {
+public class LocationService {
+    static DAO dao = DAOFactory.getDAO();
+    public static WorkLocation getLocation() {
         try {
             Enumeration<NetworkInterface> enumeration = NetworkInterface.getNetworkInterfaces();
             InetAddress ip = null;
@@ -36,7 +43,8 @@ public class IP {
                             String key = "981118347c34901d75d295b638022ded";
                             String url_head = "https://restapi.amap.com/v3/ip?output=json&key=";
                             String Url_str = url_head + key + "&ip=" + IP;
-
+//                            System.out.println(Url_str);
+//                            System.exit(123);
                             URL url = new URL(Url_str);
                             HttpsURLConnection urlcon = (HttpsURLConnection) url.openConnection();
                             urlcon.connect();
@@ -49,6 +57,8 @@ public class IP {
                             }
                             //去除首位大括号用
                             String contont_src_tem = sb.toString();
+//                            System.out.println(contont_src_tem);
+//                            System.exit(-10);
                             String contont_src = sb.substring(1, contont_src_tem.length() - 1);
                             //System.out.println(contont_src);
                             //将经纬度与前面的信息分开
@@ -57,19 +67,23 @@ public class IP {
                             String s_b = "\"rectangle\"" + s[1];
                             //跟前半部分切片
                             String[] before_split = s_a.split(",");
-                            System.out.println("====================");
-                            System.out.println("IP: " + IP + "的定位信息如下：");
-                            //输出前半部分
+
                             String province = before_split[3];
                             String city = before_split[4];
-                            String[] place = {province, city};
-                            return place;
+                            province = province.split("\"")[3];
+                            city = city.split("\"")[3];
+//                            System.out.println(province);
+//                            System.out.println(city);
+//                            System.exit(-1);
+//                            String[] place = {province, city};
+//                            return place;
+                            return new WorkLocation(province, city);
                         }
 
                     }
                 }
             }
-            return new String[]{"wrong", "wrong"};
+            return new WorkLocation("wrong", "wrong");
         } catch (SocketException e) {
             throw new RuntimeException(e);
         } catch (MalformedURLException e) {
@@ -81,7 +95,15 @@ public class IP {
         }
     }
 
-    // 方法4
+    public static void updateWorkLocation(WorkLocation workLocation) {
+        dao.updateWorkLocation(workLocation);// 更新数据库中的作息时间
+        Session.workLocation = workLocation;// 更新全局会话中的作息时间
+    }
+
+    public static void loadLocation() {
+        Session.workLocation = dao.getLocation();
+    }
+
     private static String getNowIPv4() throws IOException {
         String ip = null;
         BufferedReader br = null;

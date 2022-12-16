@@ -13,8 +13,10 @@ import java.util.Set;
 
 import com.mr.clock.pojo.Employee;
 import com.mr.clock.pojo.User;
+import com.mr.clock.pojo.WorkLocation;
 import com.mr.clock.pojo.WorkTime;
 import com.mr.clock.util.JDBCUtil;
+import com.sun.corba.se.spi.orbutil.threadpool.Work;
 
 /**
  * 基于MySQL的DAO实现类
@@ -148,6 +150,26 @@ public class DAOMysqlImpl implements DAO {
     }
 
     @Override
+    public WorkLocation getLocation() {
+        String sql = "select province,city from t_location ";
+        con = JDBCUtil.getConnection();
+        try {
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                String province = rs.getString("province");
+                String city = rs.getString("city");
+                return new WorkLocation(province, city);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtil.close(stmt, ps, rs);// 关闭数据库接口对象
+        }
+        return null;// 无记录则返回null
+    }
+
+    @Override
     public void updateWorkTime(WorkTime time) {
         String sql = "update t_work_time set start = ?, end = ? ";
         con = JDBCUtil.getConnection();
@@ -155,6 +177,22 @@ public class DAOMysqlImpl implements DAO {
             ps = con.prepareStatement(sql);
             ps.setString(1, time.getStart());
             ps.setString(2, time.getEnd());
+            ps.executeUpdate();
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        } finally {
+            JDBCUtil.close(stmt, ps, rs);// 关闭数据库接口对象
+        }
+    }
+
+    @Override
+    public void updateWorkLocation(WorkLocation workLocation) {
+        String sql = "update t_location set province = ?, city = ? ";
+        con = JDBCUtil.getConnection();
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1, workLocation.getProvince());
+            ps.setString(2, workLocation.getCity());
             ps.executeUpdate();
         } catch (SQLException e1) {
             e1.printStackTrace();

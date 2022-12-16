@@ -15,17 +15,17 @@ import javax.swing.JTextArea;
 import javax.swing.JToggleButton;
 
 import com.mr.clock.pojo.Employee;
+import com.mr.clock.pojo.WorkLocation;
 import com.mr.clock.service.CameraService;
 import com.mr.clock.service.FaceEngineService;
 import com.mr.clock.service.HRService;
+import com.mr.clock.service.LocationService;
 import com.mr.clock.session.Session;
 import com.mr.clock.util.DateTimeUtil;
+import com.sun.corba.se.spi.orbutil.threadpool.Work;
 
 /**
  * 主面板
- * 
- * 
- *
  */
 public class MainPanel extends JPanel {
     private MainFrame parent;// 主窗体
@@ -172,9 +172,6 @@ public class MainPanel extends JPanel {
 
     /**
      * 人脸识别线程
-     * 
-     *
-     *
      */
     private class DetectFaceThread extends Thread {
         boolean work = true;// 人脸识别线程是否继续扫描image
@@ -190,14 +187,22 @@ public class MainPanel extends JPanel {
                         // 获取当前帧中出现的人脸对应的特征码
                         String code = FaceEngineService.detectFace(FaceEngineService.getFaceFeature(frame));
                         if (code != null) {
+                            WorkLocation workLocationNow = LocationService.getLocation();
+                            if (!workLocationNow.equals(Session.workLocation)) {
+                                area.append("打卡地点错误，打卡失败\n");
+                                area.append("请在 " + Session.workLocation.getProvince() + Session.workLocation.getCity() + " 完成打卡\n\n");
+                                releaseCamera();
+                                return;
+                            }
+
                             // 如果特征码不为null，表明画面中存在某员工的人脸
                             Employee e = HRService.getEmp(code);// 根据特征码获取员工对象
                             HRService.addClockInRecord(e);// 为此员工添加打卡记录
-                            String[] palce =  IP.getplace();
-                            area.append(palce[0]+"\n");
-                            area.append(palce[1]+"\n");
+//                            area.append("===============================\n");
+                            area.append(workLocationNow.getProvince() + "\n");
+                            area.append(workLocationNow.getCity() + "\n");
                             // 文本域添加提示信息
-                            area.append("\n" + DateTimeUtil.dateTimeNow() + " \n");
+                            area.append(DateTimeUtil.dateTimeNow() + " \n");
                             area.append(e.getName() + " 打卡成功。\n\n");
                             releaseCamera();// 释放摄像头
                         }
