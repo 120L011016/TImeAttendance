@@ -11,8 +11,6 @@ import com.mr.clock.session.Session;
 
 /**
  * 图像文件服务
- * 
- * 
  *
  */
 public class ImageService {
@@ -22,9 +20,9 @@ public class ImageService {
     private static final String SUFFIX = "png";
 
     /**
-     * 加载所有人脸图像文件
+     * 将人脸图像文件加载到全局会话
      * 
-     * @return
+     * @return null
      */
     public static Map<String, BufferedImage> loadAllImage() {
         if (!FACE_DIR.exists()) {// 如果人脸图像的文件夹丢失

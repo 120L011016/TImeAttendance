@@ -3,6 +3,7 @@ package com.mr.clock.service;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 
+import javax.servlet.annotation.WebServlet;
 import javax.swing.JPanel;
 
 import com.github.sarxos.webcam.Webcam;
@@ -33,9 +34,9 @@ public class CameraService {
     }
 
     /**
-     * 摄像头是否开启
+     * 判断摄像头是否开启
      * 
-     * @return
+     * @return 如果摄像头开启，return true，否则return false
      */
     public static boolean cameraIsOpen() {
         if (WEBCAM == null) {// 如果计算机没有连接摄像头
@@ -47,7 +48,7 @@ public class CameraService {
     /**
      * 获取摄像头画面面板
      * 
-     * @return
+     * @return 将摄像头面板以panel的形式返回
      */
     public static JPanel getCameraPanel() {
         // 摄像头画面面板

@@ -18,6 +18,11 @@ import java.util.Enumeration;
 
 public class LocationService {
     static DAO dao = DAOFactory.getDAO();
+
+
+    /**
+     * 得到打卡时所在的位置
+     */
     public static WorkLocation getLocation() {
         try {
             Enumeration<NetworkInterface> enumeration = NetworkInterface.getNetworkInterfaces();
@@ -95,15 +100,25 @@ public class LocationService {
         }
     }
 
+    /**
+     * 更新数据库和全局会话中的打卡地点
+     */
     public static void updateWorkLocation(WorkLocation workLocation) {
-        dao.updateWorkLocation(workLocation);// 更新数据库中的作息时间
-        Session.workLocation = workLocation;// 更新全局会话中的作息时间
+        dao.updateWorkLocation(workLocation);// 更新数据库中的打卡地点
+        Session.workLocation = workLocation;// 更新全局会话中的打卡地点
     }
 
+
+    /**
+     * 从数据库中加载地点
+     */
     public static void loadLocation() {
         Session.workLocation = dao.getLocation();
     }
 
+    /**
+     * 得到打卡地点的外网地址
+     */
     private static String getNowIPv4() throws IOException {
         String ip = null;
         BufferedReader br = null;
